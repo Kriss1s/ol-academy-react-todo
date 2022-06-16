@@ -7,12 +7,13 @@ export default class CorrectTodo extends Component {
     this.state = {
       id: this.props.id,
       taskName: this.props.taskName,
-      description: this.props.taskName,
-      importance: this.props.taskName,
-      isDone: this.props.taskName,
+      description: this.props.description,
+      importance: this.props.importance,
+      isDone: this.props.isDone,
     };
   }
-  correct = () => {
+
+  saveCorrectTodo = () => {
     // this.props.state.todos.push(this.state);
     this.props.updateInfo(this.state);
     this.props.updateIsFinished();
@@ -25,7 +26,9 @@ export default class CorrectTodo extends Component {
           type='text'
           placeholder='Task Name'
           value={this.state.taskName}
-          onChange={e => this.setState({ taskName: e.target.value })}
+          onChange={e => {
+            this.setState({ taskName: e.target.value });
+          }}
         />
         <textarea
           className='textArea'
@@ -84,7 +87,7 @@ export default class CorrectTodo extends Component {
             </label>
           </div>
         </div>
-        <button className='btn save-btn' onClick={this.correct}>
+        <button className='btn save-btn' onClick={this.saveCorrectTodo}>
           Save
         </button>
       </div>

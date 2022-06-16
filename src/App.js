@@ -6,33 +6,42 @@ import AddToDoList from './components/AddToDoList.jsx';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isClickOnPlus: false,
+      isError: '',
+      isClickOnDelete: false,
+      todos: [],
+      toDelete: [],
+    };
   }
-  state = {
-    isClickOnPlus: false,
-    isError: '',
-    isClickOnDelete: false,
-    todos: [],
-    toDelete: [],
-  };
+
   addToDoForm = () => this.setState({ isClickOnPlus: true });
-  saveNewToDo = e => {
-    this.setState({ isClickOnPlus: false });
-  };
+  saveNewToDo = newTodos =>
+    this.setState({ todos: [...newTodos], isClickOnPlus: false });
   deleteOne = id => {
     const newTodos = this.state.todos.filter(e => e.id !== id);
     return this.setState({ todos: [...newTodos] });
   };
+
+  doneToggle = id => {
+    const newTodos = [...this.state.todos];
+    newTodos.forEach(e => {
+      if (e.id === id) {
+        e.isDone = !e.isDone;
+        this.setState({ todos: [...newTodos] });
+      }
+    });
+  };
   deleteDone = () => {
     const newTodos = this.state.todos.filter(e => e.isDone !== true);
-    return this.setState({ todos: [...newTodos] });
+    // console.log(this.state.todos);
+    this.setState({ todos: [...newTodos] });
   };
-  deleteAll = () => {
-    return this.setState({ todos: [] });
-  };
+  deleteAll = () => this.setState({ todos: [] });
 
-  choose = () => {
-    return this.setState({ isClickOnDelete: !this.state.isClickOnDelete });
-  };
+  chooseItem = () =>
+    this.setState({ isClickOnDelete: !this.state.isClickOnDelete });
+
   updateToDo = (id, newInfo) => {
     let newIndex;
     this.state.todos.forEach((elem, index) => {
@@ -41,56 +50,55 @@ class App extends Component {
         return newIndex;
       }
     });
-    this.state.todos.splice(newIndex, 1, newInfo);
-    return this.setState({ todos: this.state.todos });
+    const newTodo = this.state.todos;
+    newTodo.splice(newIndex, 1, newInfo);
+    this.setState({ todos: [...newTodo] });
   };
   addToDeleteArray = id => {
-    if (this.state.toDelete.every(e => e !== id)) {
-      this.state.toDelete.push(id);
+    const newToDelete = this.state.toDelete;
+    if (newToDelete.every(e => e !== id)) {
+      newToDelete.push(id);
     } else {
-      const toCut = this.state.toDelete.indexOf(id);
-      this.state.toDelete.splice(toCut, 1);
+      const toCut = newToDelete.indexOf(id);
+      newToDelete.splice(toCut, 1);
     }
+    this.setState({ toDelete: [...newToDelete] });
   };
 
   deleteSome = () => {
-    this.choose();
+    this.chooseItem();
+    const newTodo = this.state.todos;
     this.state.toDelete.forEach(eDelete => {
-      this.state.todos.map((e, index) => {
+      newTodo.map((e, index) => {
         if (e.id === eDelete) {
-          this.state.todos.splice(index, 1);
+          newTodo.splice(index, 1);
         }
       });
     });
+    this.setState({ todos: [...newTodo] });
   };
 
-  up = id => {
-    if (this.state.todos.length !== 0) {
-      this.state.todos.map((e, index) => {
-        if (e.id === id) {
-          const newOne = this.state.todos.splice(index, 1);
-          console.log(newOne[0]);
-          this.state.todos.splice(index - 1, 0, newOne[0]);
-        }
-      });
-      console.log(this.state.todos);
-      return this.setState({ todos: this.state.todos });
-    }
-  };
-  down = id => {
-    this.state.todos.map((e, index) => {
-      if (e.id === id) {
-        const newOne = this.state.todos.splice(index, 1);
-        console.log(newOne[0]);
-        this.state.todos.splice(index + 1, 0, newOne[0]);
+  upOrDown = (id, type) => {
+    const newTodos = [...this.state.todos];
+    console.log(newTodos);
+    this.state.todos.forEach((e, index) => {
+      let check;
+      let newIndex;
+      if (type === 'up') {
+        check = index !== 0;
+      } else if (type === 'down') {
+        check = index !== newTodos.length - 1;
+      }
+      if (check && e.id === id) {
+        const newOne = newTodos.splice(index, 1);
+        newIndex = type === 'up' ? index - 1 : index - 1 + 2;
+        console.log(newIndex);
+        newTodos.splice(newIndex, 0, newOne[0]);
+        return;
       }
     });
-    console.log(this.state.todos);
-    return this.setState({ todos: this.state.todos });
+    return this.setState({ todos: [...newTodos] });
   };
-  // checkName = (id) => {
-  //   if(id)
-  // };
 
   render() {
     return (
@@ -123,7 +131,10 @@ class App extends Component {
                 Delete Done
               </button>
               {this.state.isClickOnDelete === false ? (
-                <button className='btn delete-btn glass' onClick={this.choose}>
+                <button
+                  className='btn delete-btn glass'
+                  onClick={this.chooseItem}
+                >
                   Delete some
                 </button>
               ) : (
@@ -150,8 +161,8 @@ class App extends Component {
                   saveNewToDo={this.saveNewToDo}
                   deleteOne={this.deleteOne}
                   updateToDo={this.updateToDo}
-                  up={this.up}
-                  down={this.down}
+                  upOrDown={this.upOrDown}
+                  doneToggle={this.doneToggle}
                 />
               </div>
             ))}

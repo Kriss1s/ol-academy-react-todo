@@ -6,13 +6,11 @@ import {
   FaSortUp,
   FaSortDown,
 } from 'react-icons/fa';
-import FinishedDiv from './FinishedDiv';
 import CorrectToDo from './CorrectTodo';
 class AddToDoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDone: this.props.isDone,
       isFinished: true,
     };
   }
@@ -22,8 +20,8 @@ class AddToDoList extends Component {
   updateIsFinished = () => {
     return this.setState({ isFinished: !this.state.isFinished });
   };
-  upClick = () => this.props.up(this.props.id);
-  downClick = () => this.props.down(this.props.id);
+  upClick = () => this.props.upOrDown(this.props.id, 'up');
+  downClick = () => this.props.upOrDown(this.props.id, 'down');
   render() {
     return (
       <li key={this.props.id} className={`glass one-item  `}>
@@ -36,23 +34,21 @@ class AddToDoList extends Component {
               : 'low-imp'
           } span`}
         ></span>
-        {/* <div className='info'>
-          <h3>{this.props.taskName.toUpperCase()}</h3>
-          <p>{this.props.description}</p>
-        </div> */}
         {this.state.isFinished ? (
-          <FinishedDiv
-            taskName={this.props.taskName}
-            description={this.props.description}
-            isDone={this.state.isDone}
-          />
+          <>
+            <div className='info'>
+              <h3>{this.props.taskName.toUpperCase()}</h3>
+              <p>{this.props.description}</p>
+              {this.props.isDone && <p className='done'>Done!</p>}
+            </div>
+          </>
         ) : (
           <CorrectToDo
             id={this.props.id}
             taskName={this.props.taskName}
             description={this.props.description}
             importance={this.props.importance}
-            isDone={this.state.isDone}
+            isDone={this.props.isDone}
             updateIsFinished={this.updateIsFinished}
             updateInfo={this.updateInfo}
           />
@@ -60,7 +56,7 @@ class AddToDoList extends Component {
         <div className='buttons'>
           <button
             className='btn btn-item'
-            onClick={() => this.setState({ isDone: !this.state.isDone })}
+            onClick={() => this.props.doneToggle(this.props.id)}
           >
             <FaCheck />
           </button>

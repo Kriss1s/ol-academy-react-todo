@@ -11,20 +11,38 @@ class NewToDo extends Component {
       isDone: false,
     };
   }
-  newId =
-    this.props.state.todos.length === 0
-      ? 0
-      : this.props.state.todos[this.props.state.todos.length - 1].id + 1;
-  add = () => {
-    this.props.state.todos.push(this.state);
-    this.setState({
-      id: '',
-      taskName: '',
-      description: '',
-      importance: '',
-      isDone: false,
+  generateNewId = () => {
+    const indexesArray = [];
+    this.props.state.todos.forEach(element => {
+      indexesArray.push(element.id);
     });
-    this.props.saveNewToDo();
+    const newId =
+      this.props.state.todos.length === 0 ? 0 : Math.max(...indexesArray) + 1;
+    return newId;
+  };
+
+  checknewItem = name => {
+    const value = this.props.state.todos.every(e => e.taskName !== name);
+    return value;
+  };
+  addNewItem = () => {
+    // if (this.props.state.todos.length === 0) {
+    const newTodos = this.props.state.todos;
+
+    // }
+    const checkedName = this.checknewItem(this.state.taskName);
+
+    if (checkedName) {
+      newTodos.push(this.state);
+      this.props.saveNewToDo(newTodos);
+      this.setState({
+        id: '',
+        taskName: '',
+        description: '',
+        importance: '',
+        isDone: false,
+      });
+    }
   };
 
   render() {
@@ -36,7 +54,8 @@ class NewToDo extends Component {
           placeholder='Task Name'
           value={this.state.taskName}
           onChange={e => {
-            return this.setState({ id: this.newId, taskName: e.target.value });
+            const newId = this.generateNewId();
+            return this.setState({ id: newId, taskName: e.target.value });
           }}
         />
         <textarea
@@ -96,7 +115,7 @@ class NewToDo extends Component {
             </label>
           </div>
         </div>
-        <button className='btn save-btn' onClick={this.add}>
+        <button className='btn save-btn' onClick={this.addNewItem}>
           Save
         </button>
       </div>

@@ -223,8 +223,7 @@ input[class='low']:checked + p {
   font-weight: bold;
   box-shadow: 0.05rem 0.05rem 0.2rem #dd687b;
 }
-.right-side {
-}
+
 .add-list {
   width: 100%;
   display: flex;
