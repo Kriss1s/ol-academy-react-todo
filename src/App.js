@@ -47,15 +47,14 @@ class App extends Component {
     this.state.todos.forEach((elem, index) => {
       if (elem.id === id) {
         newIndex = index;
-        return newIndex;
       }
     });
-    const newTodo = this.state.todos;
+    const newTodo = [...this.state.todos];
     newTodo.splice(newIndex, 1, newInfo);
     this.setState({ todos: [...newTodo] });
   };
   addToDeleteArray = id => {
-    const newToDelete = this.state.toDelete;
+    const newToDelete = [...this.state.toDelete];
     if (newToDelete.every(e => e !== id)) {
       newToDelete.push(id);
     } else {

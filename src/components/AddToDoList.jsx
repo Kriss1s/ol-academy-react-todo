@@ -14,14 +14,10 @@ class AddToDoList extends Component {
       isFinished: true,
     };
   }
-  updateInfo = e => {
-    this.props.updateToDo(this.props.id, e);
-  };
-  updateIsFinished = () => {
-    return this.setState({ isFinished: !this.state.isFinished });
-  };
-  upClick = () => this.props.upOrDown(this.props.id, 'up');
-  downClick = () => this.props.upOrDown(this.props.id, 'down');
+
+  updateIsFinished = () =>
+    this.setState({ isFinished: !this.state.isFinished });
+
   render() {
     return (
       <li key={this.props.id} className={`glass one-item  `}>
@@ -31,7 +27,9 @@ class AddToDoList extends Component {
               ? 'high-imp'
               : this.props.importance === 'medium'
               ? 'medium-imp'
-              : 'low-imp'
+              : this.props.importance === 'low'
+              ? 'low-imp'
+              : ''
           } span`}
         ></span>
         {this.state.isFinished ? (
@@ -50,7 +48,7 @@ class AddToDoList extends Component {
             importance={this.props.importance}
             isDone={this.props.isDone}
             updateIsFinished={this.updateIsFinished}
-            updateInfo={this.updateInfo}
+            updateInfo={e => this.props.updateToDo(this.props.id, e)}
           />
         )}
         <div className='buttons'>
@@ -74,10 +72,16 @@ class AddToDoList extends Component {
           >
             <FaPencilAlt />
           </button>
-          <button className='btn btn-item' onClick={this.upClick}>
+          <button
+            className='btn btn-item'
+            onClick={() => this.props.upOrDown(this.props.id, 'up')}
+          >
             <FaSortUp />
           </button>
-          <button className='btn btn-item' onClick={this.downClick}>
+          <button
+            className='btn btn-item'
+            onClick={() => this.props.upOrDown(this.props.id, 'down')}
+          >
             <FaSortDown />
           </button>
         </div>

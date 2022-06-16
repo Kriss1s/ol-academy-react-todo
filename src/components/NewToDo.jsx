@@ -27,7 +27,7 @@ class NewToDo extends Component {
   };
   addNewItem = () => {
     // if (this.props.state.todos.length === 0) {
-    const newTodos = this.props.state.todos;
+    const newTodos = [...this.props.state.todos];
 
     // }
     const checkedName = this.checknewItem(this.state.taskName);
@@ -55,7 +55,7 @@ class NewToDo extends Component {
           value={this.state.taskName}
           onChange={e => {
             const newId = this.generateNewId();
-            return this.setState({ id: newId, taskName: e.target.value });
+            this.setState({ id: newId, taskName: e.target.value });
           }}
         />
         <textarea
