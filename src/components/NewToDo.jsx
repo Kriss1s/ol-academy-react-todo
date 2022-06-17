@@ -24,8 +24,7 @@ class NewToDo extends Component {
   };
 
   checknewItem = name => {
-    const value = this.props.state.todos.every(e => e.taskName !== name);
-    return value;
+    return this.props.state.todos.every(e => e.taskName !== name);
   };
   addNewItem = () => {
     // if (this.props.state.todos.length === 0) {
@@ -57,14 +56,14 @@ class NewToDo extends Component {
           value={this.state.taskName}
           onChange={e => {
             const newId = this.generateNewId();
-            this.setState({ id: newId, taskName: e.target.value });
+
+            this.setState({
+              id: newId,
+              taskName: e.target.value,
+            });
           }}
         />
-        {/* { ? (
-          <p className=''> Please write different </p>
-        ) : (
-          <></>
-        )} */}
+
         <textarea
           className='textArea'
           placeholder='Task Description'

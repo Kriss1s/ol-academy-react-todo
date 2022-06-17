@@ -256,6 +256,9 @@ input[class='low']:checked + p {
   margin-top: 5%;
   height: 2rem;
 }
+.warning {
+  color: (var(--red));
+}
 .btn-item {
   width: 18%;
   height: 80%;
