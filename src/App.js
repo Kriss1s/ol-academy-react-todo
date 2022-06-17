@@ -16,8 +16,10 @@ class App extends Component {
   }
 
   addToDoForm = () => this.setState({ isClickOnPlus: true });
+
   saveNewToDo = newTodos =>
     this.setState({ todos: [...newTodos], isClickOnPlus: false });
+
   deleteOne = id => {
     const newTodos = this.state.todos.filter(e => e.id !== id);
     return this.setState({ todos: [...newTodos] });
@@ -37,6 +39,7 @@ class App extends Component {
     // console.log(this.state.todos);
     this.setState({ todos: [...newTodos] });
   };
+
   deleteAll = () => this.setState({ todos: [] });
 
   chooseItem = () =>
@@ -53,6 +56,7 @@ class App extends Component {
     newTodo.splice(newIndex, 1, newInfo);
     this.setState({ todos: [...newTodo] });
   };
+
   addToDeleteArray = id => {
     const newToDelete = [...this.state.toDelete];
     if (newToDelete.every(e => e !== id)) {

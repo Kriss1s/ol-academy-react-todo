@@ -11,11 +11,13 @@ class NewToDo extends Component {
       isDone: false,
     };
   }
+
   generateNewId = () => {
     const indexesArray = [];
     this.props.state.todos.forEach(element => {
       indexesArray.push(element.id);
     });
+
     const newId =
       this.props.state.todos.length === 0 ? 0 : Math.max(...indexesArray) + 1;
     return newId;
@@ -32,7 +34,7 @@ class NewToDo extends Component {
     // }
     const checkedName = this.checknewItem(this.state.taskName);
 
-    if (checkedName) {
+    if (checkedName && this.state.taskName !== '') {
       newTodos.push(this.state);
       this.props.saveNewToDo(newTodos);
       this.setState({
@@ -58,6 +60,11 @@ class NewToDo extends Component {
             this.setState({ id: newId, taskName: e.target.value });
           }}
         />
+        {/* { ? (
+          <p className=''> Please write different </p>
+        ) : (
+          <></>
+        )} */}
         <textarea
           className='textArea'
           placeholder='Task Description'

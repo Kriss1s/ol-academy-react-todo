@@ -14,7 +14,6 @@ export default class CorrectTodo extends Component {
   }
 
   saveCorrectTodo = () => {
-    // this.props.state.todos.push(this.state);
     this.props.updateInfo(this.state);
     this.props.updateIsFinished();
   };
