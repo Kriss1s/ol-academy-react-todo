@@ -14,6 +14,11 @@ class AddToDoList extends Component {
       isFinished: true,
     };
   }
+  importanceClassName = {
+    high: 'high-imp',
+    medium: 'medium-imp',
+    low: 'low-imp',
+  };
 
   updateIsFinished = () =>
     this.setState({ isFinished: !this.state.isFinished });
@@ -23,13 +28,7 @@ class AddToDoList extends Component {
       <li key={this.props.id} className={`glass one-item  `}>
         <span
           className={`${
-            this.props.importance === 'high'
-              ? 'high-imp'
-              : this.props.importance === 'medium'
-              ? 'medium-imp'
-              : this.props.importance === 'low'
-              ? 'low-imp'
-              : ''
+            this.importanceClassName[this.props.importance] || ''
           } span`}
         ></span>
         {this.state.isFinished ? (

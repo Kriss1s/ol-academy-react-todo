@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FaMoon, FaPlus, FaSun, FaMinus } from 'react-icons/fa';
 import NewToDo from './components/NewToDo.jsx';
 import PlusButton from './components/PlusButton.jsx';
 import AddToDoList from './components/AddToDoList.jsx';
@@ -36,7 +35,6 @@ class App extends Component {
   };
   deleteDone = () => {
     const newTodos = this.state.todos.filter(e => e.isDone !== true);
-    // console.log(this.state.todos);
     this.setState({ todos: [...newTodos] });
   };
 

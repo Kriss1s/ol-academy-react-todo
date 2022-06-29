@@ -18,19 +18,17 @@ class NewToDo extends Component {
       indexesArray.push(element.id);
     });
 
-    const newId =
-      this.props.state.todos.length === 0 ? 0 : Math.max(...indexesArray) + 1;
-    return newId;
+    return this.props.state.todos.length === 0
+      ? 0
+      : Math.max(...indexesArray) + 1;
   };
 
   checknewItem = name => {
     return this.props.state.todos.every(e => e.taskName !== name);
   };
   addNewItem = () => {
-    // if (this.props.state.todos.length === 0) {
     const newTodos = [...this.props.state.todos];
 
-    // }
     const checkedName = this.checknewItem(this.state.taskName);
 
     if (checkedName && this.state.taskName !== '') {
